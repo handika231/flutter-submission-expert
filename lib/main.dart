@@ -1,3 +1,6 @@
+import 'package:ditonton/presentation/pages/home_tv_page.dart';
+import 'package:ditonton/presentation/pages/main_page.dart';
+import 'package:ditonton/presentation/provider/main_notifier.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -36,6 +39,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
+          create: (_) => MainNotifier(),
+        ),
+        ChangeNotifierProvider(
           create: (_) => di.locator<MovieListNotifier>(),
         ),
         ChangeNotifierProvider(
@@ -59,6 +65,7 @@ class MyApp extends StatelessWidget {
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (context, child) => MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Movie and TV app',
           theme: ThemeData.dark().copyWith(
             colorScheme: kColorScheme,
@@ -66,10 +73,18 @@ class MyApp extends StatelessWidget {
             scaffoldBackgroundColor: kRichBlack,
             textTheme: kTextTheme,
           ),
-          home: HomeMoviePage(),
+          home: MainPage(),
           navigatorObservers: [routeObserver],
           onGenerateRoute: (RouteSettings settings) {
             switch (settings.name) {
+              /* -------------------------------------------------------------------------- */
+              /*                                  TV SERIES                                 */
+              /* -------------------------------------------------------------------------- */
+              case HomeTVPage.ROUTE_NAME:
+                return MaterialPageRoute(builder: (_) => HomeTVPage());
+              /* -------------------------------------------------------------------------- */
+              /*                                MOVIE SERIES                                */
+              /* -------------------------------------------------------------------------- */
               case '/home':
                 return MaterialPageRoute(builder: (_) => HomeMoviePage());
               case PopularMoviesPage.ROUTE_NAME:
@@ -88,6 +103,11 @@ class MyApp extends StatelessWidget {
                 return MaterialPageRoute(builder: (_) => WatchlistMoviesPage());
               case AboutPage.ROUTE_NAME:
                 return MaterialPageRoute(builder: (_) => AboutPage());
+              /* -------------------------------------------------------------------------- */
+              /*                                  MAIN PAGE                                 */
+              /* -------------------------------------------------------------------------- */
+              case MainPage.ROUTE_NAME:
+                return MaterialPageRoute(builder: (_) => MainPage());
               default:
                 return MaterialPageRoute(
                   builder: (_) {
