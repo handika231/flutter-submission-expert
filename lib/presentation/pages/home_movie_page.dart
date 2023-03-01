@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ditonton/common/constants.dart';
+import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/domain/entities/movie.dart';
 import 'package:ditonton/presentation/pages/about_page.dart';
 import 'package:ditonton/presentation/pages/movie_detail_page.dart';
@@ -8,8 +9,8 @@ import 'package:ditonton/presentation/pages/search_page.dart';
 import 'package:ditonton/presentation/pages/top_rated_movies_page.dart';
 import 'package:ditonton/presentation/pages/watchlist_movies_page.dart';
 import 'package:ditonton/presentation/provider/movie_list_notifier.dart';
-import 'package:ditonton/common/state_enum.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 class HomeMoviePage extends StatefulWidget {
@@ -90,7 +91,10 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
                 final state = data.nowPlayingState;
                 if (state == RequestState.Loading) {
                   return Center(
-                    child: CircularProgressIndicator(),
+                    child: SpinKitPouringHourGlass(
+                      color: Colors.amber,
+                      size: 30.0,
+                    ),
                   );
                 } else if (state == RequestState.Loaded) {
                   return MovieList(data.nowPlayingMovies);
@@ -107,7 +111,10 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
                 final state = data.popularMoviesState;
                 if (state == RequestState.Loading) {
                   return Center(
-                    child: CircularProgressIndicator(),
+                    child: SpinKitPouringHourGlass(
+                      color: Colors.amber,
+                      size: 30.0,
+                    ),
                   );
                 } else if (state == RequestState.Loaded) {
                   return MovieList(data.popularMovies);
@@ -124,7 +131,10 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
                 final state = data.topRatedMoviesState;
                 if (state == RequestState.Loading) {
                   return Center(
-                    child: CircularProgressIndicator(),
+                    child: SpinKitPouringHourGlass(
+                      color: Colors.amber,
+                      size: 30.0,
+                    ),
                   );
                 } else if (state == RequestState.Loaded) {
                   return MovieList(data.topRatedMovies);
@@ -189,7 +199,10 @@ class MovieList extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: '$BASE_IMAGE_URL${movie.posterPath}',
                   placeholder: (context, url) => Center(
-                    child: CircularProgressIndicator(),
+                    child: SpinKitPouringHourGlass(
+                      color: Colors.amber,
+                      size: 30.0,
+                    ),
                   ),
                   errorWidget: (context, url, error) => Icon(Icons.error),
                 ),

@@ -1,12 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ditonton/common/constants.dart';
+import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/domain/entities/genre.dart';
 import 'package:ditonton/domain/entities/movie.dart';
 import 'package:ditonton/domain/entities/movie_detail.dart';
 import 'package:ditonton/presentation/provider/movie_detail_notifier.dart';
-import 'package:ditonton/common/state_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 class MovieDetailPage extends StatefulWidget {
@@ -38,7 +39,10 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
         builder: (context, provider, child) {
           if (provider.movieState == RequestState.Loading) {
             return Center(
-              child: CircularProgressIndicator(),
+              child: SpinKitWanderingCubes(
+                color: Colors.amber,
+                size: 30.0,
+              ),
             );
           } else if (provider.movieState == RequestState.Loaded) {
             final movie = provider.movie;
@@ -74,7 +78,10 @@ class DetailContent extends StatelessWidget {
           imageUrl: 'https://image.tmdb.org/t/p/w500${movie.posterPath}',
           width: screenWidth,
           placeholder: (context, url) => Center(
-            child: CircularProgressIndicator(),
+            child: SpinKitWanderingCubes(
+              color: Colors.amber,
+              size: 30.0,
+            ),
           ),
           errorWidget: (context, url, error) => Icon(Icons.error),
         ),
@@ -190,7 +197,10 @@ class DetailContent extends StatelessWidget {
                                 if (data.recommendationState ==
                                     RequestState.Loading) {
                                   return Center(
-                                    child: CircularProgressIndicator(),
+                                    child: SpinKitPouringHourGlass(
+                                      color: Colors.amber,
+                                      size: 30.0,
+                                    ),
                                   );
                                 } else if (data.recommendationState ==
                                     RequestState.Error) {
@@ -222,8 +232,10 @@ class DetailContent extends StatelessWidget {
                                                     'https://image.tmdb.org/t/p/w500${movie.posterPath}',
                                                 placeholder: (context, url) =>
                                                     Center(
-                                                  child:
-                                                      CircularProgressIndicator(),
+                                                  child: SpinKitWanderingCubes(
+                                                    color: Colors.amber,
+                                                    size: 30.0,
+                                                  ),
                                                 ),
                                                 errorWidget:
                                                     (context, url, error) =>

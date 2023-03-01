@@ -3,6 +3,7 @@ import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/domain/entities/movie.dart';
 import 'package:ditonton/presentation/pages/movie_detail_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class MovieCard extends StatelessWidget {
   final Movie movie;
@@ -60,7 +61,10 @@ class MovieCard extends StatelessWidget {
                   imageUrl: '$BASE_IMAGE_URL${movie.posterPath}',
                   width: 80,
                   placeholder: (context, url) => Center(
-                    child: CircularProgressIndicator(),
+                    child: SpinKitPouringHourGlass(
+                      color: Colors.amber,
+                      size: 30.0,
+                    ),
                   ),
                   errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
