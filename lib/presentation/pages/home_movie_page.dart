@@ -77,11 +77,11 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
             },
           ),
         ],
-        title: Text('Ditonton'),
+        title: Text('Movie List'),
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(12.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -184,6 +184,7 @@ class MovieList extends StatelessWidget {
     return Container(
       height: 200.h,
       child: ListView.builder(
+        physics: BouncingScrollPhysics(),
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           final movie = movies[index];

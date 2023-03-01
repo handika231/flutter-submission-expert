@@ -1,6 +1,7 @@
 import 'package:ditonton/presentation/pages/home_tv_page.dart';
 import 'package:ditonton/presentation/pages/main_page.dart';
 import 'package:ditonton/presentation/provider/main_notifier.dart';
+import 'package:ditonton/presentation/provider/tv_list_notifier.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -58,6 +59,12 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => di.locator<WatchlistMovieNotifier>(),
+        ),
+        /* -------------------------------------------------------------------------- */
+        /*                                     TV                                     */
+        /* -------------------------------------------------------------------------- */
+        ChangeNotifierProvider(
+          create: (_) => di.locator<TVListNotifier>(),
         ),
       ],
       child: ScreenUtilInit(
