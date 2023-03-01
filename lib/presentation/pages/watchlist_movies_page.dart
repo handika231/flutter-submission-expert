@@ -1,7 +1,7 @@
-import 'package:ditonton/common/state_enum.dart';
-import 'package:ditonton/common/utils.dart';
-import 'package:ditonton/presentation/provider/watchlist_movie_notifier.dart';
-import 'package:ditonton/presentation/widgets/movie_card_list.dart';
+import '../../common/state_enum.dart';
+import '../../common/utils.dart';
+import '../provider/watchlist_movie_notifier.dart';
+import '../widgets/movie_card_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';

@@ -1,5 +1,6 @@
-import 'package:ditonton/common/constants.dart';
 import 'package:flutter/material.dart';
+
+import '../../common/constants.dart';
 
 class AboutPage extends StatelessWidget {
   static const ROUTE_NAME = '/about';

@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:ditonton/common/constants.dart';
-import 'package:ditonton/common/state_enum.dart';
-import 'package:ditonton/domain/entities/genre.dart';
-import 'package:ditonton/domain/entities/movie.dart';
-import 'package:ditonton/domain/entities/movie_detail.dart';
-import 'package:ditonton/presentation/provider/movie_detail_notifier.dart';
+import '../../common/constants.dart';
+import '../../common/state_enum.dart';
+import '../../domain/entities/genre.dart';
+import '../../domain/entities/movie.dart';
+import '../../domain/entities/movie_detail.dart';
+import '../provider/movie_detail_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -127,9 +127,10 @@ class DetailContent extends StatelessWidget {
                                 }
 
                                 final message =
-                                    Provider.of<MovieDetailNotifier>(context,
-                                            listen: false)
-                                        .watchlistMessage;
+                                    Provider.of<MovieDetailNotifier>(
+                                  context,
+                                  listen: false,
+                                ).watchlistMessage;
 
                                 if (message ==
                                         MovieDetailNotifier
