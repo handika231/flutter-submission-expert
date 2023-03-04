@@ -1,6 +1,9 @@
 import 'package:ditonton/presentation/pages/home_tv_page.dart';
 import 'package:ditonton/presentation/pages/main_page.dart';
+import 'package:ditonton/presentation/pages/top_rated_tv_page.dart';
+import 'package:ditonton/presentation/pages/tv_detail_page.dart';
 import 'package:ditonton/presentation/provider/main_notifier.dart';
+import 'package:ditonton/presentation/provider/tv_detail_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_list_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_on_the_air_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_popular_notifier.dart';
@@ -18,6 +21,7 @@ import 'injection.dart' as di;
 import 'presentation/pages/about_page.dart';
 import 'presentation/pages/home_movie_page.dart';
 import 'presentation/pages/movie_detail_page.dart';
+import 'presentation/pages/on_the_air_tv_page.dart';
 import 'presentation/pages/popular_movies_page.dart';
 import 'presentation/pages/popular_tv_page.dart';
 import 'presentation/pages/search_page.dart';
@@ -79,6 +83,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => di.locator<TVTopRatedNotifier>(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => di.locator<TVDetailNotifier>(),
+        ),
       ],
       child: ScreenUtilInit(
         designSize: Size(360, 760),
@@ -104,6 +111,16 @@ class MyApp extends StatelessWidget {
                 return MaterialPageRoute(builder: (_) => HomeTVPage());
               case PopularTVPage.ROUTE_NAME:
                 return MaterialPageRoute(builder: (_) => PopularTVPage());
+              case OnTheAirTVPage.ROUTE_NAME:
+                return MaterialPageRoute(builder: (_) => OnTheAirTVPage());
+              case TopRatedTVPage.ROUTE_NAME:
+                return MaterialPageRoute(builder: (_) => TopRatedTVPage());
+              case TVDetailPage.ROUTE_NAME:
+                final id = settings.arguments as int;
+                return MaterialPageRoute(
+                  builder: (_) => TVDetailPage(id: id),
+                  settings: settings,
+                );
               /* -------------------------------------------------------------------------- */
               /*                                MOVIE SERIES                                */
               /* -------------------------------------------------------------------------- */

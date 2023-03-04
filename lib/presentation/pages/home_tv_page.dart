@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ditonton/domain/entities/tv.dart';
+import 'package:ditonton/presentation/pages/on_the_air_tv_page.dart';
+import 'package:ditonton/presentation/pages/tv_detail_page.dart';
 import 'package:ditonton/presentation/provider/tv_list_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,6 +12,7 @@ import '../../common/constants.dart';
 import '../../common/state_enum.dart';
 import 'about_page.dart';
 import 'popular_tv_page.dart';
+import 'top_rated_tv_page.dart';
 
 class HomeTVPage extends StatefulWidget {
   static const ROUTE_NAME = '/home-tv-page';
@@ -86,7 +89,9 @@ class _HomeTVPageState extends State<HomeTVPage> {
         physics: BouncingScrollPhysics(),
         padding: const EdgeInsets.all(12),
         children: [
-          _buildSubHeading('TV On The Air', () {}),
+          _buildSubHeading('TV On The Air', () {
+            Navigator.pushNamed(context, OnTheAirTVPage.ROUTE_NAME);
+          }),
           Consumer<TVListNotifier>(
             builder: (context, value, child) {
               final state = value.onTheAirState;
@@ -124,7 +129,9 @@ class _HomeTVPageState extends State<HomeTVPage> {
               }
             },
           ),
-          _buildSubHeading('Top Rated', () {}),
+          _buildSubHeading('Top Rated', () {
+            Navigator.pushNamed(context, TopRatedTVPage.ROUTE_NAME);
+          }),
           Consumer<TVListNotifier>(
             builder: (context, value, child) {
               final state = value.topRatedState;
@@ -187,12 +194,11 @@ class TVList extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             child: InkWell(
               onTap: () {
-                //TODO : Implement TV Detail Page
-                // Navigator.pushNamed(
-                //   context,
-                //   MovieDetailPage.ROUTE_NAME,
-                //   arguments: movie.id,
-                // );
+                Navigator.pushNamed(
+                  context,
+                  TVDetailPage.ROUTE_NAME,
+                  arguments: tv.id,
+                );
               },
               child: ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(16.r)),

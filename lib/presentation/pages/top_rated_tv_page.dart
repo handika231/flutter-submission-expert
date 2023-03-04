@@ -1,26 +1,26 @@
-import 'package:ditonton/presentation/provider/tv_popular_notifier.dart';
-import 'package:ditonton/presentation/widgets/tv_card_list.dart';
+import 'package:ditonton/presentation/provider/tv_top_rated_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 import '../../common/state_enum.dart';
+import '../widgets/tv_card_list.dart';
 
-class PopularTVPage extends StatefulWidget {
-  static const ROUTE_NAME = '/popular-tv';
-  const PopularTVPage({super.key});
+class TopRatedTVPage extends StatefulWidget {
+  static const ROUTE_NAME = '/top-rated-tv';
+  const TopRatedTVPage({super.key});
 
   @override
-  State<PopularTVPage> createState() => _PopularTVPageState();
+  State<TopRatedTVPage> createState() => _TopRatedTVPageState();
 }
 
-class _PopularTVPageState extends State<PopularTVPage> {
+class _TopRatedTVPageState extends State<TopRatedTVPage> {
   @override
   void initState() {
     super.initState();
     Future.microtask(
-      () => Provider.of<TVPopularNotifier>(context, listen: false)
-          .fetchTVPopular(),
+      () => Provider.of<TVTopRatedNotifier>(context, listen: false)
+          .fetchTVTopRated(),
     );
   }
 
@@ -32,23 +32,23 @@ class _PopularTVPageState extends State<PopularTVPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Consumer<TVPopularNotifier>(
+        child: Consumer<TVTopRatedNotifier>(
           builder: (context, data, child) {
-            if (data.popularState == RequestState.Loading) {
+            if (data.state == RequestState.Loading) {
               return Center(
                 child: SpinKitWanderingCubes(
                   color: Colors.amber,
                   size: 30.0,
                 ),
               );
-            } else if (data.popularState == RequestState.Loaded) {
+            } else if (data.state == RequestState.Loaded) {
               return ListView.builder(
                 physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index) {
-                  final tv = data.tvPopular[index];
+                  final tv = data.tvTopRatedList[index];
                   return TVCardList(tv);
                 },
-                itemCount: data.tvPopular.length,
+                itemCount: data.tvTopRatedList.length,
               );
             } else {
               return Center(
