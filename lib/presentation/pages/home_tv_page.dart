@@ -24,7 +24,9 @@ class _HomeTVPageState extends State<HomeTVPage> {
     super.initState();
     Future.microtask(
       () => Provider.of<TVListNotifier>(context, listen: false)
-        ..fetchTVOnTheAir(),
+        ..fetchTVOnTheAir()
+        ..fetchTVPopular()
+        ..fetchTVTopRated(),
     );
   }
 
@@ -103,8 +105,65 @@ class _HomeTVPageState extends State<HomeTVPage> {
               }
             },
           ),
+          _buildSubHeading('Popular', () {}),
+          Consumer<TVListNotifier>(
+            builder: (context, value, child) {
+              final state = value.popularState;
+              if (state == RequestState.Loading) {
+                return Center(
+                  child: SpinKitPouringHourGlass(
+                    color: Colors.amber,
+                    size: 30.0,
+                  ),
+                );
+              } else if (state == RequestState.Loaded) {
+                return TVList(value.tvPopular);
+              } else {
+                return Text('Failed');
+              }
+            },
+          ),
+          _buildSubHeading('Top Rated', () {}),
+          Consumer<TVListNotifier>(
+            builder: (context, value, child) {
+              final state = value.topRatedState;
+              if (state == RequestState.Loading) {
+                return Center(
+                  child: SpinKitPouringHourGlass(
+                    color: Colors.amber,
+                    size: 30.0,
+                  ),
+                );
+              } else if (state == RequestState.Loaded) {
+                return TVList(value.tvTopRated);
+              } else {
+                return Text('Failed');
+              }
+            },
+          ),
         ],
       ),
+    );
+  }
+
+  Widget _buildSubHeading(String title, VoidCallback onTap) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: kHeading6,
+        ),
+        InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [Text('See More'), Icon(Icons.arrow_forward_ios)],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
