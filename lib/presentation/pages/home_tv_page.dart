@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import '../../common/constants.dart';
 import '../../common/state_enum.dart';
 import 'about_page.dart';
+import 'popular_tv_page.dart';
 
 class HomeTVPage extends StatefulWidget {
   static const ROUTE_NAME = '/home-tv-page';
@@ -82,12 +83,10 @@ class _HomeTVPageState extends State<HomeTVPage> {
         centerTitle: true,
       ),
       body: ListView(
+        physics: BouncingScrollPhysics(),
         padding: const EdgeInsets.all(12),
         children: [
-          Text(
-            'TV On The Air',
-            style: kHeading6,
-          ),
+          _buildSubHeading('TV On The Air', () {}),
           Consumer<TVListNotifier>(
             builder: (context, value, child) {
               final state = value.onTheAirState;
@@ -105,7 +104,9 @@ class _HomeTVPageState extends State<HomeTVPage> {
               }
             },
           ),
-          _buildSubHeading('Popular', () {}),
+          _buildSubHeading('Popular', () {
+            Navigator.pushNamed(context, PopularTVPage.ROUTE_NAME);
+          }),
           Consumer<TVListNotifier>(
             builder: (context, value, child) {
               final state = value.popularState;

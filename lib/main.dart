@@ -2,6 +2,9 @@ import 'package:ditonton/presentation/pages/home_tv_page.dart';
 import 'package:ditonton/presentation/pages/main_page.dart';
 import 'package:ditonton/presentation/provider/main_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_list_notifier.dart';
+import 'package:ditonton/presentation/provider/tv_on_the_air_notifier.dart';
+import 'package:ditonton/presentation/provider/tv_popular_notifier.dart';
+import 'package:ditonton/presentation/provider/tv_top_rated_notifier.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,6 +19,7 @@ import 'presentation/pages/about_page.dart';
 import 'presentation/pages/home_movie_page.dart';
 import 'presentation/pages/movie_detail_page.dart';
 import 'presentation/pages/popular_movies_page.dart';
+import 'presentation/pages/popular_tv_page.dart';
 import 'presentation/pages/search_page.dart';
 import 'presentation/pages/top_rated_movies_page.dart';
 import 'presentation/pages/watchlist_movies_page.dart';
@@ -66,6 +70,15 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => di.locator<TVListNotifier>(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => di.locator<TVPopularNotifier>(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => di.locator<TVOnTheAirNotifier>(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => di.locator<TVTopRatedNotifier>(),
+        ),
       ],
       child: ScreenUtilInit(
         designSize: Size(360, 760),
@@ -89,6 +102,8 @@ class MyApp extends StatelessWidget {
               /* -------------------------------------------------------------------------- */
               case HomeTVPage.ROUTE_NAME:
                 return MaterialPageRoute(builder: (_) => HomeTVPage());
+              case PopularTVPage.ROUTE_NAME:
+                return MaterialPageRoute(builder: (_) => PopularTVPage());
               /* -------------------------------------------------------------------------- */
               /*                                MOVIE SERIES                                */
               /* -------------------------------------------------------------------------- */
