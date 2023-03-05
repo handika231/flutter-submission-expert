@@ -12,7 +12,9 @@ import 'package:mockito/mockito.dart';
 import '../../helpers/test_helper.mocks.dart';
 import '../../json_reader.dart';
 
-void main() {
+void main() async {
+  await dotenv.load(fileName: ".env");
+
   final String apiKey = "api_key=${dotenv.env['API_KEY']}";
   const BASE_URL = 'https://api.themoviedb.org/3';
 
@@ -21,6 +23,7 @@ void main() {
 
   setUp(() {
     mockHttpClient = MockHttpClient();
+
     dataSource = MovieRemoteDataSourceImpl(client: mockHttpClient);
   });
 

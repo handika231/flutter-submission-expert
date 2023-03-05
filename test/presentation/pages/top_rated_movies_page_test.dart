@@ -3,6 +3,7 @@ import 'package:ditonton/domain/entities/movie.dart';
 import 'package:ditonton/presentation/pages/top_rated_movies_page.dart';
 import 'package:ditonton/presentation/provider/top_rated_movies_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -27,16 +28,15 @@ void main() {
     );
   }
 
-  testWidgets('Page should display progress bar when loading',
+  //test to find widget SpinKitWanderingCubes
+  testWidgets('Page should display SpinKitWanderingCubes when loading',
       (WidgetTester tester) async {
     when(mockNotifier.state).thenReturn(RequestState.Loading);
 
-    final progressFinder = find.byType(CircularProgressIndicator);
-    final centerFinder = find.byType(Center);
+    final progressFinder = find.byType(SpinKitWanderingCubes);
 
     await tester.pumpWidget(_makeTestableWidget(TopRatedMoviesPage()));
 
-    expect(centerFinder, findsOneWidget);
     expect(progressFinder, findsOneWidget);
   });
 

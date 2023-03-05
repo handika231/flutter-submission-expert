@@ -1,9 +1,10 @@
-import '../../common/state_enum.dart';
-import '../provider/top_rated_movies_notifier.dart';
-import '../widgets/movie_card_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
+
+import '../../common/state_enum.dart';
+import '../provider/top_rated_movies_notifier.dart';
+import '../widgets/movie_card_list.dart';
 
 class TopRatedMoviesPage extends StatefulWidget {
   static const ROUTE_NAME = '/top-rated-movie';

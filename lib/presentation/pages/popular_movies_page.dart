@@ -35,7 +35,7 @@ class _PopularMoviesPageState extends State<PopularMoviesPage> {
             print(data.movies);
             if (data.state == RequestState.Loading) {
               return Center(
-                child: SpinKitWanderingCubes(
+                child: SpinKitHourGlass(
                   color: Colors.amber,
                   size: 30.0,
                 ),
