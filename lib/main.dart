@@ -9,6 +9,7 @@ import 'package:ditonton/presentation/provider/tv_on_the_air_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_popular_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_search_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_top_rated_notifier.dart';
+import 'package:ditonton/presentation/provider/watchlist_tv_notifier.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,6 +29,7 @@ import 'presentation/pages/popular_tv_page.dart';
 import 'presentation/pages/search_page.dart';
 import 'presentation/pages/search_tv_page.dart';
 import 'presentation/pages/top_rated_movies_page.dart';
+import 'presentation/pages/watch_list_tv_page.dart';
 import 'presentation/pages/watchlist_movies_page.dart';
 import 'presentation/provider/movie_detail_notifier.dart';
 import 'presentation/provider/movie_list_notifier.dart';
@@ -91,6 +93,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => di.locator<TVSearchNotifier>(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => di.locator<WatchlistTVNotifier>(),
+        ),
       ],
       child: ScreenUtilInit(
         designSize: Size(360, 760),
@@ -128,6 +133,8 @@ class MyApp extends StatelessWidget {
                 );
               case SearchTVPage.ROUTE_NAME:
                 return CupertinoPageRoute(builder: (_) => SearchTVPage());
+              case WatchListTVPage.ROUTE_NAME:
+                return CupertinoPageRoute(builder: (_) => WatchListTVPage());
 
               /* -------------------------------------------------------------------------- */
               /*                                MOVIE SERIES                                */

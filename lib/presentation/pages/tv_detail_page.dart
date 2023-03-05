@@ -46,6 +46,7 @@ class _TVDetailPageState extends State<TVDetailPage> {
             final tv = provider.tvDetail;
             return SafeArea(
               child: DetailContent(
+                isAddedWatchlist: provider.isAddedToWatchlist,
                 tv: tv,
                 recommendations: provider.tvRecommendations,
               ),
@@ -62,9 +63,12 @@ class _TVDetailPageState extends State<TVDetailPage> {
 class DetailContent extends StatelessWidget {
   final TVDetail tv;
   final List<TV> recommendations;
-  // final bool isAddedWatchlist;
+  final bool isAddedWatchlist;
 
-  const DetailContent({required this.tv, required this.recommendations});
+  const DetailContent(
+      {required this.tv,
+      required this.recommendations,
+      required this.isAddedWatchlist});
 
   @override
   Widget build(BuildContext context) {
@@ -109,58 +113,54 @@ class DetailContent extends StatelessWidget {
                               tv.name,
                               style: kHeading5,
                             ),
-                            // ElevatedButton(
-                            //   onPressed: () async {
-                            //     if (!isAddedWatchlist) {
-                            //       await Provider.of<MovieDetailNotifier>(
-                            //               context,
-                            //               listen: false)
-                            //           .addWatchlist(movie);
-                            //     } else {
-                            //       await Provider.of<MovieDetailNotifier>(
-                            //               context,
-                            //               listen: false)
-                            //           .removeFromWatchlist(movie);
-                            //     }
+                            ElevatedButton(
+                              onPressed: () async {
+                                if (!isAddedWatchlist) {
+                                  await Provider.of<TVDetailNotifier>(context,
+                                          listen: false)
+                                      .addTVWatchList(tv);
+                                } else {
+                                  await Provider.of<TVDetailNotifier>(context,
+                                          listen: false)
+                                      .removeTVWatchList(tv);
+                                }
 
-                            //     final message =
-                            //         Provider.of<MovieDetailNotifier>(
-                            //       context,
-                            //       listen: false,
-                            //     ).watchlistMessage;
+                                final message = Provider.of<TVDetailNotifier>(
+                                  context,
+                                  listen: false,
+                                ).watchListMessage;
 
-                            //     if (message ==
-                            //             MovieDetailNotifier
-                            //                 .watchlistAddSuccessMessage ||
-                            //         message ==
-                            //             MovieDetailNotifier
-                            //                 .watchlistRemoveSuccessMessage) {
-                            //       ScaffoldMessenger.of(context).showSnackBar(
-                            //           SnackBar(content: Text(message)));
-                            //     } else {
-                            //       showDialog(
-                            //           context: context,
-                            //           builder: (context) {
-                            //             return AlertDialog(
-                            //               content: Text(message),
-                            //             );
-                            //           });
-                            //     }
-                            //   },
-                            //   child: Row(
-                            //     mainAxisSize: MainAxisSize.min,
-                            //     children: [
-                            //       isAddedWatchlist
-                            //           ? Icon(Icons.check)
-                            //           : Icon(Icons.add),
-                            //       Text('Watchlist'),
-                            //     ],
-                            //   ),
-                            // ),
+                                if (message ==
+                                        TVDetailNotifier
+                                            .watchlistAddSuccessMessage ||
+                                    message ==
+                                        TVDetailNotifier
+                                            .watchlistRemoveSuccessMessage) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text(message)));
+                                } else {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          content: Text(message),
+                                        );
+                                      });
+                                }
+                              },
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  isAddedWatchlist
+                                      ? Icon(Icons.check)
+                                      : Icon(Icons.add),
+                                  Text('Watchlist'),
+                                ],
+                              ),
+                            ),
                             Text(
                               _showGenres(tv.genres),
                             ),
-
                             Row(
                               children: [
                                 RatingBarIndicator(

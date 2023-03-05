@@ -2,17 +2,21 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:ditonton/common/failure.dart';
+import 'package:ditonton/data/datasources/tv_local_data_source.dart';
 import 'package:ditonton/domain/entities/tv.dart';
 import 'package:ditonton/domain/entities/tv_detail.dart';
 import 'package:ditonton/domain/repositories/tv_repository.dart';
 
 import '../../common/exception.dart';
 import '../datasources/tv_remote_data_source.dart';
+import '../models/tv_table.dart';
 
 class TVRepositoryImpl implements TVRepository {
   final TVRemoteDataSource remoteDataSource;
+  final TVLocalDataSource localDataSource;
 
-  TVRepositoryImpl({required this.remoteDataSource});
+  TVRepositoryImpl(
+      {required this.remoteDataSource, required this.localDataSource});
 
   @override
   Future<Either<Failure, List<TV>>> getOnTheAirTV() async {
@@ -83,6 +87,42 @@ class TVRepositoryImpl implements TVRepository {
       return Left(ServerFailure(''));
     } on SocketException {
       return Left(ConnectionFailure('Failed to connect to the network'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<TV>>> getWatchlistTV() async {
+    final result = await localDataSource.getWatchlistTV();
+    return Right(result.map((model) => model.toEntity()).toList());
+  }
+
+  @override
+  Future<bool> isAddedToWatchlist(int id) async {
+    final result = await localDataSource.getTVById(id);
+    return result != null;
+  }
+
+  @override
+  Future<Either<Failure, String>> removeWatchlist(TVDetail tv) async {
+    try {
+      final result =
+          await localDataSource.removeWatchlist(TVTable.fromEntity(tv));
+      return Right(result);
+    } on DatabaseException catch (e) {
+      return Left(DatabaseFailure(e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> saveWatchlist(TVDetail tv) async {
+    try {
+      final result =
+          await localDataSource.insertWatchlist(TVTable.fromEntity(tv));
+      return Right(result);
+    } on DatabaseException catch (e) {
+      return Left(DatabaseFailure(e.message));
+    } catch (e) {
+      throw e;
     }
   }
 }
