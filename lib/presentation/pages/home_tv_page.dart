@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ditonton/domain/entities/tv.dart';
 import 'package:ditonton/presentation/pages/on_the_air_tv_page.dart';
+import 'package:ditonton/presentation/pages/search_tv_page.dart';
 import 'package:ditonton/presentation/pages/tv_detail_page.dart';
 import 'package:ditonton/presentation/provider/tv_list_notifier.dart';
 import 'package:flutter/material.dart';
@@ -77,8 +78,10 @@ class _HomeTVPageState extends State<HomeTVPage> {
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              // Navigator.pushNamed(context, SearchPage.ROUTE_NAME);
-              // TODO: Implement Search TV Page
+              Navigator.pushNamed(
+                context,
+                SearchTVPage.ROUTE_NAME,
+              );
             },
           ),
         ],

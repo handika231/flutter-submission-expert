@@ -73,4 +73,16 @@ class TVRepositoryImpl implements TVRepository {
       return Left(ConnectionFailure('Failed to connect to the network'));
     }
   }
+
+  @override
+  Future<Either<Failure, List<TV>>> searchTV(String query) async {
+    try {
+      final result = await remoteDataSource.searchTV(query);
+      return Right(result.map((model) => model.toEntity()).toList());
+    } on ServerException {
+      return Left(ServerFailure(''));
+    } on SocketException {
+      return Left(ConnectionFailure('Failed to connect to the network'));
+    }
+  }
 }

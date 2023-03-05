@@ -10,4 +10,5 @@ abstract class TVRepository {
   Future<Either<Failure, List<TV>>> getTopRatedTV();
   Future<Either<Failure, TVDetail>> getTVDetail(int id);
   Future<Either<Failure, List<TV>>> getTVRecommendations(int id);
+  Future<Either<Failure, List<TV>>> searchTV(String query);
 }
