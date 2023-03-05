@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import '../../common/constants.dart';
 import '../../common/state_enum.dart';
 import '../../domain/entities/genre.dart';
+import '../../domain/entities/tv.dart';
 
 class TVDetailPage extends StatefulWidget {
   static const ROUTE_NAME = '/tv-detail';
@@ -46,6 +47,7 @@ class _TVDetailPageState extends State<TVDetailPage> {
             return SafeArea(
               child: DetailContent(
                 tv: tv,
+                recommendations: provider.tvRecommendations,
               ),
             );
           } else {
@@ -59,10 +61,10 @@ class _TVDetailPageState extends State<TVDetailPage> {
 
 class DetailContent extends StatelessWidget {
   final TVDetail tv;
-  // final List<TV> recommendations;
+  final List<TV> recommendations;
   // final bool isAddedWatchlist;
 
-  const DetailContent({required this.tv});
+  const DetailContent({required this.tv, required this.recommendations});
 
   @override
   Widget build(BuildContext context) {
@@ -186,67 +188,67 @@ class DetailContent extends StatelessWidget {
                               'Recommendations',
                               style: kHeading6,
                             ),
-                            // Consumer<TVDetailNotifier>(
-                            //   builder: (context, data, child) {
-                            //     if (data.recommendationState ==
-                            //         RequestState.Loading) {
-                            //       return Center(
-                            //         child: SpinKitPouringHourGlass(
-                            //           color: Colors.amber,
-                            //           size: 30.0,
-                            //         ),
-                            //       );
-                            //     } else if (data.recommendationState ==
-                            //         RequestState.Error) {
-                            //       return Text(data.message);
-                            //     } else if (data.recommendationState ==
-                            //         RequestState.Loaded) {
-                            //       return Container(
-                            //         height: 150,
-                            //         child: ListView.builder(
-                            //           scrollDirection: Axis.horizontal,
-                            //           itemBuilder: (context, index) {
-                            //             final movie = recommendations[index];
-                            //             return Padding(
-                            //               padding: const EdgeInsets.all(4.0),
-                            //               child: InkWell(
-                            //                 onTap: () {
-                            //                   Navigator.pushReplacementNamed(
-                            //                     context,
-                            //                     MovieDetailPage.ROUTE_NAME,
-                            //                     arguments: movie.id,
-                            //                   );
-                            //                 },
-                            //                 child: ClipRRect(
-                            //                   borderRadius: BorderRadius.all(
-                            //                     Radius.circular(8),
-                            //                   ),
-                            //                   child: CachedNetworkImage(
-                            //                     imageUrl:
-                            //                         'https://image.tmdb.org/t/p/w500${movie.posterPath}',
-                            //                     placeholder: (context, url) =>
-                            //                         Center(
-                            //                       child: SpinKitWanderingCubes(
-                            //                         color: Colors.amber,
-                            //                         size: 30.0,
-                            //                       ),
-                            //                     ),
-                            //                     errorWidget:
-                            //                         (context, url, error) =>
-                            //                             Icon(Icons.error),
-                            //                   ),
-                            //                 ),
-                            //               ),
-                            //             );
-                            //           },
-                            //           itemCount: recommendations.length,
-                            //         ),
-                            //       );
-                            //     } else {
-                            //       return Container();
-                            //     }
-                            //   },
-                            // ),
+                            Consumer<TVDetailNotifier>(
+                              builder: (context, data, child) {
+                                if (data.tvRecommendationState ==
+                                    RequestState.Loading) {
+                                  return Center(
+                                    child: SpinKitPouringHourGlass(
+                                      color: Colors.amber,
+                                      size: 30.0,
+                                    ),
+                                  );
+                                } else if (data.tvRecommendationState ==
+                                    RequestState.Error) {
+                                  return Text(data.message);
+                                } else if (data.tvRecommendationState ==
+                                    RequestState.Loaded) {
+                                  return Container(
+                                    height: 150,
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemBuilder: (context, index) {
+                                        final movie = recommendations[index];
+                                        return Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.pushReplacementNamed(
+                                                context,
+                                                TVDetailPage.ROUTE_NAME,
+                                                arguments: movie.id,
+                                              );
+                                            },
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(8),
+                                              ),
+                                              child: CachedNetworkImage(
+                                                imageUrl:
+                                                    'https://image.tmdb.org/t/p/w500${movie.posterPath}',
+                                                placeholder: (context, url) =>
+                                                    Center(
+                                                  child: SpinKitWanderingCubes(
+                                                    color: Colors.amber,
+                                                    size: 30.0,
+                                                  ),
+                                                ),
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        Icon(Icons.error),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      itemCount: recommendations.length,
+                                    ),
+                                  );
+                                } else {
+                                  return Container();
+                                }
+                              },
+                            ),
                           ],
                         ),
                       ),

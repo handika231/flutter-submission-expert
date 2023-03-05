@@ -1,6 +1,7 @@
 import 'package:ditonton/data/repositories/tv_repository_impl.dart';
 import 'package:ditonton/domain/usecases/get_on_the_air_tv.dart';
 import 'package:ditonton/domain/usecases/get_tv_detail.dart';
+import 'package:ditonton/domain/usecases/get_tv_recomendations.dart';
 import 'package:ditonton/presentation/provider/tv_detail_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_list_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_on_the_air_notifier.dart';
@@ -68,6 +69,7 @@ void init() {
 
   locator.registerFactory(
     () => TVDetailNotifier(
+      getTVRecommendations: locator(),
       getTVDetail: locator(),
     ),
   );
@@ -117,6 +119,7 @@ void init() {
   locator.registerLazySingleton(() => GetPopularTV(locator()));
   locator.registerLazySingleton(() => GetTVOnTopRated(locator()));
   locator.registerLazySingleton(() => GetTVDetail(locator()));
+  locator.registerLazySingleton(() => GetTVRecommendations(locator()));
 
   locator.registerLazySingleton(() => GetNowPlayingMovies(locator()));
   locator.registerLazySingleton(() => GetPopularMovies(locator()));
