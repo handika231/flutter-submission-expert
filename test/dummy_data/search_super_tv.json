@@ -1,0 +1,29 @@
+{
+    "page": 1,
+    "results": [
+        {
+            "adult": false,
+            "backdrop_path": "/xlKKD1TXJvh0YYlVPqqQ3g3ZUjM.jpg",
+            "genre_ids": [
+                16,
+                10759,
+                10765
+            ],
+            "id": 80020,
+            "origin_country": [
+                "JP"
+            ],
+            "original_language": "ja",
+            "original_name": "スーパードラゴンボールヒーローズ",
+            "overview": "Trunks returns from the future to train with Goku and Vegeta. However, it disappears without warning. Then the mysterious Fu bursts in, telling them that Trunks has been imprisoned in the Prison Planet, a mysterious complex in an unknown place in the universes. The group seeks the dragon balls to free Trunks, but an endless battle awaits them! Will Goku and the others rescue Trunks and escape the Prison Planet?",
+            "popularity": 228.632,
+            "poster_path": "/8jq6xv5c1WK7KAPOXCsodm8eUxp.jpg",
+            "first_air_date": "2018-07-01",
+            "name": "Super Dragon Ball Heroes",
+            "vote_average": 7.561,
+            "vote_count": 2826
+        }
+    ],
+    "total_pages": 51,
+    "total_results": 1002
+}
