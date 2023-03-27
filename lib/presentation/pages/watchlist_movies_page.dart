@@ -1,10 +1,11 @@
-import '../../common/state_enum.dart';
-import '../../common/utils.dart';
-import '../provider/watchlist_movie_notifier.dart';
-import '../widgets/movie_card_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
+
+import '../../common/state_enum.dart';
+import '../../common/utils.dart';
+import '../bloc/watchlist_movie_notifier.dart';
+import '../widgets/movie_card_list.dart';
 
 class WatchlistMoviesPage extends StatefulWidget {
   static const ROUTE_NAME = '/watchlist-movie';

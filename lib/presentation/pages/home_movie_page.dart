@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import '../../common/constants.dart';
 import '../../common/state_enum.dart';
 import '../../domain/entities/movie.dart';
-import '../provider/movie_list_notifier.dart';
+import '../bloc/movie_list_notifier.dart';
 import 'about_page.dart';
 import 'movie_detail_page.dart';
 import 'popular_movies_page.dart';

@@ -1,18 +1,19 @@
+import 'package:ditonton/presentation/bloc/main_notifier.dart';
+import 'package:ditonton/presentation/bloc/tv_detail_notifier.dart';
+import 'package:ditonton/presentation/bloc/tv_list_notifier.dart';
+import 'package:ditonton/presentation/bloc/tv_on_the_air_notifier.dart';
+import 'package:ditonton/presentation/bloc/tv_popular_notifier.dart';
+import 'package:ditonton/presentation/bloc/tv_search_notifier.dart';
+import 'package:ditonton/presentation/bloc/tv_top_rated_notifier.dart';
+import 'package:ditonton/presentation/bloc/watchlist_tv_notifier.dart';
 import 'package:ditonton/presentation/pages/home_tv_page.dart';
 import 'package:ditonton/presentation/pages/main_page.dart';
 import 'package:ditonton/presentation/pages/top_rated_tv_page.dart';
 import 'package:ditonton/presentation/pages/tv_detail_page.dart';
-import 'package:ditonton/presentation/provider/main_notifier.dart';
-import 'package:ditonton/presentation/provider/tv_detail_notifier.dart';
-import 'package:ditonton/presentation/provider/tv_list_notifier.dart';
-import 'package:ditonton/presentation/provider/tv_on_the_air_notifier.dart';
-import 'package:ditonton/presentation/provider/tv_popular_notifier.dart';
-import 'package:ditonton/presentation/provider/tv_search_notifier.dart';
-import 'package:ditonton/presentation/provider/tv_top_rated_notifier.dart';
-import 'package:ditonton/presentation/provider/watchlist_tv_notifier.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +21,12 @@ import 'package:provider/provider.dart';
 import 'common/constants.dart';
 import 'common/utils.dart';
 import 'injection.dart' as di;
+import 'presentation/bloc/movie_detail_notifier.dart';
+import 'presentation/bloc/movie_list_notifier.dart';
+import 'presentation/bloc/movie_search_notifier.dart';
+import 'presentation/bloc/popular_movies_notifier.dart';
+import 'presentation/bloc/top_rated_movies_notifier.dart';
+import 'presentation/bloc/watchlist_movie_notifier.dart';
 import 'presentation/pages/about_page.dart';
 import 'presentation/pages/home_movie_page.dart';
 import 'presentation/pages/movie_detail_page.dart';
@@ -31,12 +38,6 @@ import 'presentation/pages/search_tv_page.dart';
 import 'presentation/pages/top_rated_movies_page.dart';
 import 'presentation/pages/watch_list_tv_page.dart';
 import 'presentation/pages/watchlist_movies_page.dart';
-import 'presentation/provider/movie_detail_notifier.dart';
-import 'presentation/provider/movie_list_notifier.dart';
-import 'presentation/provider/movie_search_notifier.dart';
-import 'presentation/provider/popular_movies_notifier.dart';
-import 'presentation/provider/top_rated_movies_notifier.dart';
-import 'presentation/provider/watchlist_movie_notifier.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,10 +50,10 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
+    return MultiBlocProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (_) => MainNotifier(),
+        BlocProvider(
+          create: (_) => MainCubit(),
         ),
         ChangeNotifierProvider(
           create: (_) => di.locator<MovieListNotifier>(),

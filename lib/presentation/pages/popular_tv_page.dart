@@ -1,4 +1,4 @@
-import 'package:ditonton/presentation/provider/tv_popular_notifier.dart';
+import 'package:ditonton/presentation/bloc/tv_popular_notifier.dart';
 import 'package:ditonton/presentation/widgets/tv_card_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';

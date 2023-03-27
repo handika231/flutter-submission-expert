@@ -1,9 +1,9 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:ditonton/common/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../provider/main_notifier.dart';
+import '../bloc/main_notifier.dart';
 
 class MainPage extends StatelessWidget {
   static const ROUTE_NAME = '/main-page';
@@ -12,29 +12,28 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('MainPage build');
-    final provider = Provider.of<MainNotifier>(context, listen: false);
     return Scaffold(
-      body: Consumer<MainNotifier>(
-        builder: (context, mainNotifier, child) {
-          return IndexedStack(
-            index: mainNotifier.activeIndex,
-            children: provider.pages,
+      body: BlocBuilder<MainCubit, int>(
+        builder: (context, state) => IndexedStack(
+          index: state,
+          children: context.read<MainCubit>().pages,
+        ),
+      ),
+      bottomNavigationBar: BlocBuilder<MainCubit, int>(
+        builder: (context, state) {
+          return AnimatedBottomNavigationBar(
+            backgroundColor: kOxfordBlue,
+            icons: const [
+              Icons.movie,
+              Icons.tv,
+            ],
+            activeIndex: state,
+            onTap: (index) => context.read<MainCubit>().changePage(index),
+            notchSmoothness: NotchSmoothness.smoothEdge,
+            activeColor: kMikadoYellow,
+            gapLocation: GapLocation.center,
           );
         },
-      ),
-      bottomNavigationBar: Consumer<MainNotifier>(
-        builder: (context, value, child) => AnimatedBottomNavigationBar(
-          backgroundColor: kOxfordBlue,
-          icons: const [
-            Icons.movie,
-            Icons.tv,
-          ],
-          activeIndex: value.activeIndex,
-          onTap: (index) => context.read<MainNotifier>().onTap(index),
-          notchSmoothness: NotchSmoothness.smoothEdge,
-          activeColor: kMikadoYellow,
-          gapLocation: GapLocation.center,
-        ),
       ),
     );
   }

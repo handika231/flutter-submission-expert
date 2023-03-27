@@ -3,7 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 import '../../common/state_enum.dart';
-import '../provider/popular_movies_notifier.dart';
+import '../bloc/popular_movies_notifier.dart';
 import '../widgets/movie_card_list.dart';
 
 class PopularMoviesPage extends StatefulWidget {

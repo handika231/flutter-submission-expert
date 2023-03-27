@@ -1,4 +1,4 @@
-import 'package:ditonton/presentation/provider/tv_top_rated_notifier.dart';
+import 'package:ditonton/presentation/bloc/tv_top_rated_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
