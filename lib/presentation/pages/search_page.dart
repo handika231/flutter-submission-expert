@@ -1,10 +1,9 @@
 import 'package:ditonton/presentation/bloc/movie_search/movie_search_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:provider/provider.dart';
 
 import '../../common/constants.dart';
-import '../../common/state_enum.dart';
 import '../widgets/movie_card_list.dart';
 
 class SearchPage extends StatelessWidget {
@@ -39,33 +38,38 @@ class SearchPage extends StatelessWidget {
               'Search Result',
               style: kHeading6,
             ),
-            Consumer<MovieSearchNotifier>(
-              builder: (context, data, child) {
-                if (data.state == RequestState.Loading) {
+            BlocBuilder<MovieSearchBloc, MovieSearchState>(
+              builder: (context, state) {
+                if (state is MovieSearchLoading) {
                   return Center(
                     child: SpinKitPouringHourGlass(
                       color: Colors.amber,
                       size: 30.0,
                     ),
                   );
-                } else if (data.state == RequestState.Loaded) {
-                  final result = data.searchResult;
+                }
+                if (state is MovieSearchLoaded) {
+                  final result = state.movies;
                   return Expanded(
                     child: ListView.builder(
                       physics: BouncingScrollPhysics(),
                       padding: const EdgeInsets.all(8),
                       itemBuilder: (context, index) {
-                        final movie = data.searchResult[index];
+                        final movie = state.movies[index];
                         return MovieCard(movie);
                       },
                       itemCount: result.length,
                     ),
                   );
-                } else {
-                  return Expanded(
-                    child: Container(),
+                }
+                if (state is MovieSearchError) {
+                  return Center(
+                    child: Text(state.message),
                   );
                 }
+                return Expanded(
+                  child: Container(),
+                );
               },
             ),
           ],

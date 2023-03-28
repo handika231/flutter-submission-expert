@@ -45,13 +45,6 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
               accountEmail: Text('ditonton@dicoding.com'),
             ),
             ListTile(
-              leading: Icon(Icons.movie),
-              title: Text('Movies'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
               leading: Icon(Icons.save_alt),
               title: Text('Watchlist'),
               onTap: () {
@@ -92,7 +85,8 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
               ),
               BlocBuilder<MovieNowPlayingBloc, MovieNowPlayingState>(
                 builder: (context, state) {
-                  if (state is MovieNowPlayingLoaded) {
+                  print('state: $state');
+                  if (state is MovieNowPlayingLoading) {
                     return Center(
                       child: SpinKitPouringHourGlass(
                         color: Colors.amber,
