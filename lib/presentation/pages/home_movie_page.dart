@@ -3,6 +3,7 @@ import 'package:ditonton/presentation/bloc/movie_now_playing/movie_now_playing_b
 import 'package:ditonton/presentation/bloc/movie_popular/movie_popular_bloc.dart';
 import 'package:ditonton/presentation/bloc/movie_top_rated/movie_top_rated_bloc.dart';
 import 'package:ditonton/presentation/pages/search_page.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -43,6 +44,10 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
               ),
               accountName: Text('Ditonton'),
               accountEmail: Text('ditonton@dicoding.com'),
+            ),
+            ListTile(
+              title: Text('Trigger Error'),
+              onTap: () async => FirebaseCrashlytics.instance.crash(),
             ),
             ListTile(
               leading: Icon(Icons.save_alt),
