@@ -1,9 +1,8 @@
-import 'package:ditonton/presentation/bloc/tv_on_the_air_notifier.dart';
+import 'package:ditonton/presentation/bloc/tv_on_the_air/tv_on_the_air_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:provider/provider.dart';
 
-import '../../common/state_enum.dart';
 import '../widgets/tv_card_list.dart';
 
 class OnTheAirTVPage extends StatefulWidget {
@@ -18,10 +17,7 @@ class _OnTheAirTVPageState extends State<OnTheAirTVPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(
-      () => Provider.of<TVOnTheAirNotifier>(context, listen: false)
-          .fetchTVOnTheAir(),
-    );
+    context.read<TvOnTheAirBloc>().add(TvOnTheAirRequested());
   }
 
   @override
@@ -32,29 +28,35 @@ class _OnTheAirTVPageState extends State<OnTheAirTVPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Consumer<TVOnTheAirNotifier>(
-          builder: (context, data, child) {
-            if (data.state == RequestState.Loading) {
+        child: BlocBuilder<TvOnTheAirBloc, TvOnTheAirState>(
+          builder: (context, state) {
+            if (state is TvOnTheAirLoading) {
               return Center(
                 child: SpinKitWanderingCubes(
                   color: Colors.amber,
                   size: 30.0,
                 ),
               );
-            } else if (data.state == RequestState.Loaded) {
+            }
+            if (state is TvOnTheAirLoaded) {
               return ListView.builder(
                 itemBuilder: (context, index) {
-                  final tv = data.tvList[index];
+                  final tv = state.tvs[index];
                   return TVCardList(tv);
                 },
-                itemCount: data.tvList.length,
-              );
-            } else {
-              return Center(
-                key: Key('error_message'),
-                child: Text(data.message),
+                itemCount: state.tvs.length,
               );
             }
+            if (state is TvOnTheAirError) {
+              return Center(
+                key: Key('error_message'),
+                child: Text(state.message),
+              );
+            }
+            return Center(
+              key: Key('error_message'),
+              child: Text('Terjadi kesalahan'),
+            );
           },
         ),
       ),

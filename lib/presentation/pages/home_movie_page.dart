@@ -1,14 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ditonton/presentation/bloc/movie_now_playing/movie_now_playing_bloc.dart';
+import 'package:ditonton/presentation/bloc/movie_popular/movie_popular_bloc.dart';
+import 'package:ditonton/presentation/bloc/movie_top_rated/movie_top_rated_bloc.dart';
 import 'package:ditonton/presentation/pages/search_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:provider/provider.dart';
 
 import '../../common/constants.dart';
-import '../../common/state_enum.dart';
 import '../../domain/entities/movie.dart';
-import '../bloc/movie_list_notifier.dart';
 import 'about_page.dart';
 import 'movie_detail_page.dart';
 import 'popular_movies_page.dart';
@@ -24,11 +25,10 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(
-        () => Provider.of<MovieListNotifier>(context, listen: false)
-          ..fetchNowPlayingMovies()
-          ..fetchPopularMovies()
-          ..fetchTopRatedMovies());
+
+    context.read<MovieNowPlayingBloc>().add(MovieNowPlayingRequested());
+    context.read<MoviePopularBloc>().add(MoviePopularRequested());
+    context.read<MovieTopRatedBloc>().add(MovieTopRatedRequested());
   }
 
   @override
@@ -90,61 +90,78 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
                 'Now Playing',
                 style: kHeading6,
               ),
-              Consumer<MovieListNotifier>(builder: (context, data, child) {
-                final state = data.nowPlayingState;
-                if (state == RequestState.Loading) {
-                  return Center(
-                    child: SpinKitPouringHourGlass(
-                      color: Colors.amber,
-                      size: 30.0,
-                    ),
-                  );
-                } else if (state == RequestState.Loaded) {
-                  return MovieList(data.nowPlayingMovies);
-                } else {
-                  return Text('Failed');
-                }
-              }),
+              BlocBuilder<MovieNowPlayingBloc, MovieNowPlayingState>(
+                builder: (context, state) {
+                  if (state is MovieNowPlayingLoaded) {
+                    return Center(
+                      child: SpinKitPouringHourGlass(
+                        color: Colors.amber,
+                        size: 30.0,
+                      ),
+                    );
+                  }
+                  if (state is MovieNowPlayingLoaded) {
+                    return MovieList(state.movies);
+                  }
+                  if (state is MovieNowPlayingError) {
+                    return Text(state.message);
+                  }
+
+                  return Text('Terjadi kesalahan...');
+                },
+              ),
               _buildSubHeading(
                 title: 'Popular',
                 onTap: () =>
                     Navigator.pushNamed(context, PopularMoviesPage.ROUTE_NAME),
               ),
-              Consumer<MovieListNotifier>(builder: (context, data, child) {
-                final state = data.popularMoviesState;
-                if (state == RequestState.Loading) {
-                  return Center(
-                    child: SpinKitPouringHourGlass(
-                      color: Colors.amber,
-                      size: 30.0,
-                    ),
-                  );
-                } else if (state == RequestState.Loaded) {
-                  return MovieList(data.popularMovies);
-                } else {
-                  return Text('Failed');
-                }
-              }),
+              BlocBuilder<MoviePopularBloc, MoviePopularState>(
+                builder: (context, state) {
+                  if (state is MoviePopularLoading) {
+                    return Center(
+                      child: SpinKitPouringHourGlass(
+                        color: Colors.amber,
+                        size: 30.0,
+                      ),
+                    );
+                  }
+
+                  if (state is MoviePopularLoaded) {
+                    return MovieList(state.movies);
+                  }
+                  if (state is MoviePopularError) {
+                    return Text(state.message);
+                  }
+
+                  return Text('Terjadi kesalahan...');
+                },
+              ),
               _buildSubHeading(
                 title: 'Top Rated',
                 onTap: () =>
                     Navigator.pushNamed(context, TopRatedMoviesPage.ROUTE_NAME),
               ),
-              Consumer<MovieListNotifier>(builder: (context, data, child) {
-                final state = data.topRatedMoviesState;
-                if (state == RequestState.Loading) {
-                  return Center(
-                    child: SpinKitPouringHourGlass(
-                      color: Colors.amber,
-                      size: 30.0,
-                    ),
-                  );
-                } else if (state == RequestState.Loaded) {
-                  return MovieList(data.topRatedMovies);
-                } else {
-                  return Text('Failed');
-                }
-              }),
+              BlocBuilder<MovieTopRatedBloc, MovieTopRatedState>(
+                builder: (context, state) {
+                  if (state is MovieTopRatedLoading) {
+                    return Center(
+                      child: SpinKitPouringHourGlass(
+                        color: Colors.amber,
+                        size: 30.0,
+                      ),
+                    );
+                  }
+
+                  if (state is MovieTopRatedLoaded) {
+                    return MovieList(state.movies);
+                  }
+                  if (state is MovieTopRatedError) {
+                    return Text(state.message);
+                  }
+
+                  return Text('Terjadi kesalahan...');
+                },
+              ),
             ],
           ),
         ),

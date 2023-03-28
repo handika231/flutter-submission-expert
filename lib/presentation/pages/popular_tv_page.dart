@@ -1,10 +1,8 @@
-import 'package:ditonton/presentation/bloc/tv_popular_notifier.dart';
+import 'package:ditonton/presentation/bloc/tv_popular/tv_popular_bloc.dart';
 import 'package:ditonton/presentation/widgets/tv_card_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:provider/provider.dart';
-
-import '../../common/state_enum.dart';
 
 class PopularTVPage extends StatefulWidget {
   static const ROUTE_NAME = '/popular-tv';
@@ -18,10 +16,7 @@ class _PopularTVPageState extends State<PopularTVPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(
-      () => Provider.of<TVPopularNotifier>(context, listen: false)
-          .fetchTVPopular(),
-    );
+    context.read<TvPopularBloc>().add(TVPopularRequested());
   }
 
   @override
@@ -32,30 +27,36 @@ class _PopularTVPageState extends State<PopularTVPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Consumer<TVPopularNotifier>(
-          builder: (context, data, child) {
-            if (data.popularState == RequestState.Loading) {
+        child: BlocBuilder<TvPopularBloc, TvPopularState>(
+          builder: (context, state) {
+            if (state is TvPopularLoading) {
               return Center(
                 child: SpinKitWanderingCubes(
                   color: Colors.amber,
                   size: 30.0,
                 ),
               );
-            } else if (data.popularState == RequestState.Loaded) {
+            }
+            if (state is TvPopularLoaded) {
               return ListView.builder(
                 physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index) {
-                  final tv = data.tvPopular[index];
+                  final tv = state.tvs[index];
                   return TVCardList(tv);
                 },
-                itemCount: data.tvPopular.length,
-              );
-            } else {
-              return Center(
-                key: Key('error_message'),
-                child: Text(data.message),
+                itemCount: state.tvs.length,
               );
             }
+            if (state is TVPopularError) {
+              return Center(
+                key: Key('error_message'),
+                child: Text(state.message),
+              );
+            }
+            return Center(
+              key: Key('error_message'),
+              child: Text('Terjadi kesalahan'),
+            );
           },
         ),
       ),

@@ -1,17 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ditonton/domain/entities/tv.dart';
-import 'package:ditonton/presentation/bloc/tv_list_notifier.dart';
+import 'package:ditonton/presentation/bloc/tv_on_the_air/tv_on_the_air_bloc.dart';
+import 'package:ditonton/presentation/bloc/tv_popular/tv_popular_bloc.dart';
+import 'package:ditonton/presentation/bloc/tv_top_rated/tv_top_rated_bloc.dart';
 import 'package:ditonton/presentation/pages/on_the_air_tv_page.dart';
 import 'package:ditonton/presentation/pages/search_tv_page.dart';
 import 'package:ditonton/presentation/pages/tv_detail_page.dart';
 import 'package:ditonton/presentation/pages/watch_list_tv_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:provider/provider.dart';
 
 import '../../common/constants.dart';
-import '../../common/state_enum.dart';
 import 'about_page.dart';
 import 'popular_tv_page.dart';
 import 'top_rated_tv_page.dart';
@@ -28,12 +29,9 @@ class _HomeTVPageState extends State<HomeTVPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(
-      () => Provider.of<TVListNotifier>(context, listen: false)
-        ..fetchTVOnTheAir()
-        ..fetchTVPopular()
-        ..fetchTVTopRated(),
-    );
+    context.read<TvOnTheAirBloc>().add(TvOnTheAirRequested());
+    context.read<TvPopularBloc>().add(TVPopularRequested());
+    context.read<TvTopRatedBloc>().add(TVTopRatedRequested());
   }
 
   @override
@@ -92,64 +90,73 @@ class _HomeTVPageState extends State<HomeTVPage> {
         physics: BouncingScrollPhysics(),
         padding: const EdgeInsets.all(12),
         children: [
-          _buildSubHeading('TV On The Air', () {
-            Navigator.pushNamed(context, OnTheAirTVPage.ROUTE_NAME);
-          }),
-          Consumer<TVListNotifier>(
-            builder: (context, value, child) {
-              final state = value.onTheAirState;
-              if (state == RequestState.Loading) {
+          _buildSubHeading(
+            'TV On The Air',
+            () {
+              Navigator.pushNamed(context, OnTheAirTVPage.ROUTE_NAME);
+            },
+          ),
+          BlocBuilder<TvOnTheAirBloc, TvOnTheAirState>(
+            builder: (context, state) {
+              if (state is TvOnTheAirLoading) {
                 return Center(
                   child: SpinKitPouringHourGlass(
                     color: Colors.amber,
                     size: 30.0,
                   ),
                 );
-              } else if (state == RequestState.Loaded) {
-                return TVList(value.tvOnTheAir);
-              } else {
-                return Text('Failed');
               }
+              if (state is TvOnTheAirLoaded) {
+                return TVList(state.tvs);
+              }
+              if (state is TvOnTheAirError) {
+                return Text(state.message);
+              }
+              return Text('Terjadi Kesalahan...');
             },
           ),
           _buildSubHeading('Popular', () {
             Navigator.pushNamed(context, PopularTVPage.ROUTE_NAME);
           }),
-          Consumer<TVListNotifier>(
-            builder: (context, value, child) {
-              final state = value.popularState;
-              if (state == RequestState.Loading) {
+          BlocBuilder<TvPopularBloc, TvPopularState>(
+            builder: (context, state) {
+              if (state is TvPopularLoading) {
                 return Center(
                   child: SpinKitPouringHourGlass(
                     color: Colors.amber,
                     size: 30.0,
                   ),
                 );
-              } else if (state == RequestState.Loaded) {
-                return TVList(value.tvPopular);
-              } else {
-                return Text('Failed');
               }
+              if (state is TvPopularLoaded) {
+                return TVList(state.tvs);
+              }
+              if (state is TVPopularError) {
+                return Text(state.message);
+              }
+              return Text('Terjadi Kesalahan...');
             },
           ),
           _buildSubHeading('Top Rated', () {
             Navigator.pushNamed(context, TopRatedTVPage.ROUTE_NAME);
           }),
-          Consumer<TVListNotifier>(
-            builder: (context, value, child) {
-              final state = value.topRatedState;
-              if (state == RequestState.Loading) {
+          BlocBuilder<TvTopRatedBloc, TvTopRatedState>(
+            builder: (context, state) {
+              if (state is TvTopRatedLoading) {
                 return Center(
                   child: SpinKitPouringHourGlass(
                     color: Colors.amber,
                     size: 30.0,
                   ),
                 );
-              } else if (state == RequestState.Loaded) {
-                return TVList(value.tvTopRated);
-              } else {
-                return Text('Failed');
               }
+              if (state is TvTopRatedLoaded) {
+                return TVList(state.tvs);
+              }
+              if (state is TVTopRatedError) {
+                return Text(state.message);
+              }
+              return Text('Terjadi Kesalahan...');
             },
           ),
         ],
