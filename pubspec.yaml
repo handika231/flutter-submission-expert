@@ -46,6 +46,7 @@ dependencies:
   flutter_bloc: ^8.1.2
   firebase_core: ^2.8.0
   firebase_crashlytics: ^3.0.17
+  bloc_test: ^9.1.1
 
 dev_dependencies:
   mockito: ^5.3.2

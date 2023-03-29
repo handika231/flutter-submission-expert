@@ -24,7 +24,7 @@ class _OnTheAirTVPageState extends State<OnTheAirTVPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Popular Movies'),
+        title: Text('TV On The Air'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
