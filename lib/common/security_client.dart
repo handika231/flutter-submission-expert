@@ -14,7 +14,8 @@ class SecurityClient {
           .asUint8List();
       context.setTrustedCertificatesBytes(bytes);
     } on TlsException catch (e) {
-      if (e.osError?.message != null) {
+      if (e.osError?.message != null &&
+          e.osError!.message.contains('CERT_ALREADY_IN_HASH_TABLE')) {
         debugPrint(e.osError?.message);
       } else {
         rethrow;
