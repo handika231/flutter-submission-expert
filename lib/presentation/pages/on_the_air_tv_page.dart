@@ -6,7 +6,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../widgets/tv_card_list.dart';
 
 class OnTheAirTVPage extends StatefulWidget {
-  static const ROUTE_NAME = '/popular-tv';
+  static const ROUTE_NAME = '/tv-on-the-air';
   const OnTheAirTVPage({super.key});
 
   @override
